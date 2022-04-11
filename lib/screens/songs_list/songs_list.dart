@@ -16,11 +16,11 @@ class SongsList extends StatefulHookConsumerWidget {
 }
 
 class _SongsListState extends ConsumerState<SongsList> {
-  final _addTodoKey = UniqueKey();
-  final _newTodoController = TextEditingController();
-  final ScrollController _controller = ScrollController();
+  final _searchFieldKey = UniqueKey();
+  final _searchFieldController = TextEditingController();
+  final _scrollController = ScrollController();
 
-  int _songsLength = 0;
+  int _songsCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,37 +29,43 @@ class _SongsListState extends ConsumerState<SongsList> {
       appBar: AppBar(
         // Search Bar
         title: TextField(
-          key: _addTodoKey,
-          controller: _newTodoController,
-          decoration: const InputDecoration(
+          key: _searchFieldKey,
+          controller: _searchFieldController,
+          decoration: InputDecoration(
             isDense: true,
-            contentPadding: EdgeInsets.symmetric(
+            contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 8,
             ),
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             filled: true,
             fillColor: Colors.white,
             hintText: 'Search artist',
             suffixIcon: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: null,
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                _searchFieldController.clear();
+              },
             ),
           ),
-          onChanged: (value) {
-            ref.read(searchKeywordProvider.notifier).state = value;
+          textInputAction: TextInputAction.done,
+          onEditingComplete: () async {
+            if (_searchFieldController.text.isNotEmpty) {
+              final _keywords = _searchFieldController.text;
+              await ref
+                  .read(songsProvider.notifier)
+                  .searchSongsByArtist(_keywords);
+              FocusScope.of(context).requestFocus(FocusNode());
+            }
           },
-          onSubmitted: (value) {},
         ),
       ),
       body: Consumer(builder: (context, ref, child) {
-        final _isLoadMoreError = ref.watch(songsProvider).isLoadMoreError;
-        final _isLoadMoreDone = ref.watch(songsProvider).isLoadMoreDone;
         final _isLoading = ref.watch(songsProvider).isLoading;
         final _songs = ref.watch(songsSearchProvider.notifier).state;
 
         // Update songs counter
-        _songsLength = _songs.length;
+        _songsCount = _songs.length;
 
         if (_songs.isEmpty) {
           if (_isLoading == false) {
@@ -85,15 +91,15 @@ class _SongsListState extends ConsumerState<SongsList> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     clipBehavior: Clip.antiAlias,
-                    child: Image.network(_songs[index].albumCover),
+                    child: Image.network(_songs[index].artworkUrl),
                   ),
-                  title: Text(_songs[index].songTitle),
+                  title: Text(_songs[index].trackName),
                   subtitle: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(_songs[index].artist),
-                      Text(_songs[index].albumTitle),
+                      Text(_songs[index].artistName),
+                      Text(_songs[index].collectionName),
                     ],
                   ),
                   onTap: () {

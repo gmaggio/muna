@@ -7,16 +7,16 @@ import 'package:muna/src/settings/settings_service.dart';
 
 import 'app.dart';
 
-final searchKeywordProvider = StateProvider<String>((ref) {
+final searchKeywordsProvider = StateProvider<String>((ref) {
   return '';
 });
 
 final songsSearchProvider = StateProvider<List<SongData>>((ref) {
   final songsState = ref.watch(songsProvider);
-  final searchKeyword = ref.watch(searchKeywordProvider);
+  final searchKeywords = ref.watch(searchKeywordsProvider);
 
   return songsState.songs
-      .where((element) => element.artist.contains(searchKeyword))
+      .where((element) => element.artistName.contains(searchKeywords))
       .toList();
 });
 
