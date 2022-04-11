@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'pages/music_list.dart';
+import 'pages/songs_list.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -29,15 +29,14 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context)!.appTitle,
-      // theme: ThemeData(),
       onGenerateRoute: (RouteSettings routeSettings) {
         return MaterialPageRoute<void>(
           settings: routeSettings,
           builder: (BuildContext context) {
             switch (routeSettings.name) {
-              case MusicList.routeName:
+              case SongsList.routeName:
               default:
-                return MusicList();
+                return SongsList();
             }
           },
         );

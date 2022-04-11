@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'app.dart';
+import 'pages/data/song_data.dart';
+import 'pages/providers/songs_provider.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
+
+final searchKeywordProvider = StateProvider<String>((ref) {
+  return '';
+});
+
+final songsSearchProvider = StateProvider<List<SongData>>((ref) {
+  final songsState = ref.watch(songsProvider);
+  final searchKeyword = ref.watch(searchKeywordProvider);
+
+  return songsState.songs
+      .where((element) => element.artist.contains(searchKeyword))
+      .toList();
+});
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
@@ -16,5 +32,9 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
