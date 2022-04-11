@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:muna/pages/data/song_data.dart';
+import 'package:muna/screens/data/song_data.dart';
 
 class SongState {
   final int page;
@@ -22,7 +22,5 @@ final songsProvider = StateNotifierProvider<SongNotifier, SongState>((ref) {
 });
 
 class SongNotifier extends StateNotifier<SongState> {
-  SongNotifier() : super(SongState()) {
-    // _initSongs();
-  }
+  SongNotifier() : super(SongState());
 }

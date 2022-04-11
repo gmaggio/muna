@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'app.dart';
-import 'pages/data/song_data.dart';
-import 'pages/providers/songs_provider.dart';
+import 'screens/data/song_data.dart';
+import 'screens/providers/songs_provider.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 
