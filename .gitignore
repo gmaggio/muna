@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+*_BAK.*
+*_BAK/
 
 # IntelliJ related
 *.iml

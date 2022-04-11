@@ -12,6 +12,28 @@ class SampleItemListView extends StatelessWidget {
       SampleItem(1),
       SampleItem(2),
       SampleItem(3),
+      SampleItem(4),
+      SampleItem(5),
+      SampleItem(6),
+      SampleItem(7),
+      SampleItem(8),
+      SampleItem(9),
+      SampleItem(10),
+      SampleItem(11),
+      SampleItem(12),
+      SampleItem(13),
+      SampleItem(14),
+      SampleItem(15),
+      SampleItem(16),
+      SampleItem(17),
+      SampleItem(18),
+      SampleItem(19),
+      SampleItem(20),
+      SampleItem(21),
+      SampleItem(22),
+      SampleItem(23),
+      SampleItem(24),
+      SampleItem(25),
     ],
   }) : super(key: key);
 
@@ -53,20 +75,21 @@ class SampleItemListView extends StatelessWidget {
           final item = items[index];
 
           return ListTile(
-              title: Text('SampleItem ${item.id}'),
-              leading: const CircleAvatar(
-                // Display the Flutter Logo image asset.
-                foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-              ),
-              onTap: () {
-                // Navigate to the details page. If the user leaves and returns to
-                // the app after it has been killed while running in the
-                // background, the navigation stack is restored.
-                Navigator.restorablePushNamed(
-                  context,
-                  SampleItemDetailsView.routeName,
-                );
-              });
+            title: Text('SampleItem ${item.id}'),
+            leading: const CircleAvatar(
+              // Display the Flutter Logo image asset.
+              foregroundImage: AssetImage('assets/images/flutter_logo.png'),
+            ),
+            onTap: () {
+              // Navigate to the details page. If the user leaves and returns to
+              // the app after it has been killed while running in the
+              // background, the navigation stack is restored.
+              Navigator.restorablePushNamed(
+                context,
+                SampleItemDetailsView.routeName,
+              );
+            },
+          );
         },
       ),
     );
