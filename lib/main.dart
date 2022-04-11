@@ -1,24 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:muna/screens/songs_list/data/song_data.dart';
-import 'package:muna/screens/songs_list/providers/songs_provider.dart';
 import 'package:muna/src/settings/settings_controller.dart';
 import 'package:muna/src/settings/settings_service.dart';
 
 import 'app.dart';
-
-final searchKeywordsProvider = StateProvider<String>((ref) {
-  return '';
-});
-
-final songsSearchProvider = StateProvider<List<SongData>>((ref) {
-  final songsState = ref.watch(songsProvider);
-  final searchKeywords = ref.watch(searchKeywordsProvider);
-
-  return songsState.songs
-      .where((element) => element.artistName.contains(searchKeywords))
-      .toList();
-});
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple

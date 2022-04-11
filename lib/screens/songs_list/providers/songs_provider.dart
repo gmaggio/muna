@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:muna/screens/songs_list/data/song_data.dart';
 import 'package:muna/screens/songs_list/data/song_state.dart';
 import 'package:muna/screens/songs_list/services/songs_service.dart';
 
@@ -12,21 +13,30 @@ class SongNotifier extends StateNotifier<SongState> {
   final _songsService = SongsService();
 
   searchSongsByArtist(String keywords) async {
-    final songs = await _songsService.fetchSongs(keywords);
+    state = state.copyWith(
+      isLoading: true,
+    );
 
-    print('------> songs: $songs');
+    final _keywords = keywords.replaceAll(RegExp(' '), '+');
+    final _songs = await _songsService.fetchSongs(_keywords);
 
-    if (songs == null) {
+    if (_songs == null) {
       state = state.copyWith(
-        songs: songs,
+        songs: _songs,
         isLoading: false,
       );
       return;
     }
 
     state = state.copyWith(
-      songs: songs,
+      songs: _songs,
       isLoading: false,
+    );
+  }
+
+  playSong(SongData song) async {
+    state = state.copyWith(
+      songSelected: song,
     );
   }
 }

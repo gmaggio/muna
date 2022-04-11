@@ -1,12 +1,12 @@
 import 'song_data.dart';
 
 class SongState {
-  final List<SongData> songs;
+  final List<SongData>? songs;
   final SongData? songSelected;
   final bool isLoading;
 
   SongState({
-    this.songs = const [],
+    this.songs,
     this.songSelected,
     this.isLoading = false,
   });

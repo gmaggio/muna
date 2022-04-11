@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:muna/main.dart';
+import 'package:just_audio/just_audio.dart';
 
 import 'providers/songs_provider.dart';
 
@@ -18,9 +18,7 @@ class SongsList extends StatefulHookConsumerWidget {
 class _SongsListState extends ConsumerState<SongsList> {
   final _searchFieldKey = UniqueKey();
   final _searchFieldController = TextEditingController();
-  final _scrollController = ScrollController();
-
-  int _songsCount = 0;
+  final _audioPlayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -60,125 +58,140 @@ class _SongsListState extends ConsumerState<SongsList> {
           },
         ),
       ),
-      body: Consumer(builder: (context, ref, child) {
-        final _isLoading = ref.watch(songsProvider).isLoading;
-        final _songs = ref.watch(songsSearchProvider.notifier).state;
+      body: Consumer(
+        builder: (context, ref, child) {
+          final _isLoading = ref.watch(songsProvider).isLoading;
+          final _songs = ref.watch(songsProvider).songs;
+          final _songSelected = ref.watch(songsProvider).songSelected;
 
-        // Update songs counter
-        _songsCount = _songs.length;
-
-        if (_songs.isEmpty) {
-          if (_isLoading == false) {
-            return const Center(
-              child: Text('error'),
-            );
-          }
-          return const _Loading();
-        }
-
-        return Stack(
-          children: [
-            // Music List
-            ListView.builder(
-              restorationId: 'SongsList',
-              itemCount: _songs.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Image.network(_songs[index].artworkUrl),
-                  ),
-                  title: Text(_songs[index].trackName),
-                  subtitle: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(_songs[index].artistName),
-                      Text(_songs[index].collectionName),
-                    ],
-                  ),
-                  onTap: () {
-                    debugPrint('----> Handle play song');
-                  },
-                );
-              },
-            ),
-
-            // Music Player
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: DefaultTextStyle.merge(
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[850],
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      // Song Details
-                      Container(
+          return Stack(
+            children: [
+              if (_songs == null)
+                const Center(
+                  child: Text('Search an artist'),
+                )
+              else if (_isLoading == true)
+                const _Loading()
+              else if (_songs.isEmpty)
+                const Center(
+                  child: Text('error'),
+                )
+              else
+                // Music List
+                ListView.builder(
+                  restorationId: 'SongsList',
+                  itemCount: _songs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      leading: Container(
                         width: 50,
                         height: 50,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         clipBehavior: Clip.antiAlias,
                         child: Image.network(
-                          'https://via.placeholder.com/100',
+                          _songs[index].artworkUrl,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: const [
-                            Text('Jack Johnson'), // Artist
-                            Text('In Between Dreams'), // Album
-                          ],
+                      title: Text(_songs[index].trackName),
+                      subtitle: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(_songs[index].artistName),
+                          Text(_songs[index].collectionName),
+                        ],
+                      ),
+                      trailing: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Builder(
+                          builder: (context) {
+                            if (_songSelected != null &&
+                                _songSelected.previewUrl ==
+                                    _songs[index].previewUrl) {
+                              return const Icon(Icons.music_note);
+                            }
+                            return Container();
+                          },
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      onTap: () async {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        await ref
+                            .read(songsProvider.notifier)
+                            .playSong(_songs[index]);
+                      },
+                    );
+                  },
+                ),
 
-                      // Controls
-                      IconButton(
-                        icon: const Icon(Icons.skip_previous),
-                        color: Colors.white,
-                        onPressed: () {},
+              // Music Player
+              if (_songSelected != null)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: DefaultTextStyle.merge(
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[850],
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24),
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.play_arrow),
-                        color: Colors.white,
-                        onPressed: () {},
+                      clipBehavior: Clip.antiAlias,
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          // Song Details
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: Image.network(
+                              _songSelected.artworkUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(_songSelected.trackName),
+                                Text(_songSelected.artistName),
+                                Text(_songSelected.collectionName),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+
+                          // Controls
+                          IconButton(
+                            icon: const Icon(Icons.play_arrow),
+                            color: Colors.white,
+                            onPressed: () {},
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.skip_next),
-                        color: Colors.white,
-                        onPressed: () {},
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ],
-        );
-      }),
+            ],
+          );
+        },
+      ),
     );
   }
 }
