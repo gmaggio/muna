@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:muna/screens/songs_list/data/song_data.dart';
+import 'package:muna/screens/songs_list/providers/songs_provider.dart';
+import 'package:muna/src/settings/settings_controller.dart';
+import 'package:muna/src/settings/settings_service.dart';
 
 import 'app.dart';
-import 'screens/data/song_data.dart';
-import 'screens/providers/songs_provider.dart';
-import 'src/settings/settings_controller.dart';
-import 'src/settings/settings_service.dart';
 
 final searchKeywordProvider = StateProvider<String>((ref) {
   return '';
