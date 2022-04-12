@@ -20,19 +20,22 @@ class _SongsListState extends ConsumerState<SongsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        // Search Bar
-        title: const SearchBar(),
-      ),
       body: Consumer(
         builder: (context, ref, child) {
           return Stack(
-            children: const [
-              Songs(),
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: const [
+                  SearchBar(),
+                  Expanded(
+                    child: Songs(),
+                  ),
+                ],
+              ),
 
               // Footer
-              Positioned(
+              const Positioned(
                 left: 0,
                 right: 0,
                 bottom: 0,

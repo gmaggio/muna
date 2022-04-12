@@ -16,6 +16,12 @@ class SongNotifier extends StateNotifier<SongState> {
 
   AudioPlayer get audioPlayer => _audioPlayer;
 
+  updateSearchKeyword(String searchKeyword) {
+    state = state.copyWith(
+      searchKeyword: searchKeyword,
+    );
+  }
+
   searchSongsByArtist(String keywords) async {
     state = state.copyWith(
       isLoading: true,
