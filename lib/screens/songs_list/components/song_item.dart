@@ -56,6 +56,7 @@ class SongItem extends StatelessWidget {
           horizontalTitleGap: MunaStyles.distancePrimary,
           title: Text(
             songData.trackName,
+            key: const Key('song-title'),
             style: _theme.textTheme.bodyText2?.copyWith(
               color: _isSelected ? _theme.colorScheme.primaryContainer : null,
             ),
@@ -85,7 +86,7 @@ class SongItem extends StatelessWidget {
           ),
           trailing: _isSelected
               ? SizedBox(
-                  key: const Key('song-playing-indicator'),
+                  key: const Key('song-active-indicator'),
                   width: _defaultIconSize,
                   height: _defaultIconSize,
                   child: Icon(

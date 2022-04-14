@@ -84,6 +84,7 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                         )
                       : Icon(
                           Icons.close,
+                          key: const Key('search-field-clear'),
                           color: _defaultContentColor,
                         ),
                   onPressed: () {

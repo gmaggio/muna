@@ -75,6 +75,7 @@ class MusicPlayer extends StatelessWidget {
                     children: [
                       Text(
                         _songSelected.trackName,
+                        key: const Key('music-detail-title'),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: MunaStyles.distanceShort),
