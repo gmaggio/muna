@@ -26,7 +26,7 @@ class SongItem extends StatelessWidget {
         final _theme = Theme.of(context);
 
         return ListTile(
-          key: Key('trackid_${songData.trackId}'),
+          key: Key('song-${songData.trackId}'),
           contentPadding: EdgeInsets.zero,
           leading: Container(
             width: _defaultIconSize,
@@ -85,6 +85,7 @@ class SongItem extends StatelessWidget {
           ),
           trailing: _isSelected
               ? SizedBox(
+                  key: const Key('song-playing-indicator'),
                   width: _defaultIconSize,
                   height: _defaultIconSize,
                   child: Icon(

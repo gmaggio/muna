@@ -14,8 +14,10 @@ class Songs extends StatelessWidget {
       builder: (context, ref, child) {
         final _isLoading = ref.watch(songsProvider).isLoading;
         final _songs = ref.watch(songsProvider).songs;
+        final _songSelected = ref.watch(songsProvider).songSelected;
 
         final _screenVerticalHeight = MediaQuery.of(context).size.height;
+        final _bottomOffset = _screenVerticalHeight * (20 / 100);
 
         // Pre-data handling
         if (_isLoading == true) {
@@ -24,7 +26,7 @@ class Songs extends StatelessWidget {
           return Center(
             child: Icon(
               Icons.arrow_circle_up,
-              key: const Key('start_icon_indicator'),
+              key: const Key('start-indicator'),
               size: 100,
               color: Theme.of(context)
                   .colorScheme
@@ -33,8 +35,16 @@ class Songs extends StatelessWidget {
             ),
           );
         } else if (_songs.isEmpty) {
-          return const Center(
-            child: Text('Music not found'),
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: _songSelected != null ? _bottomOffset : 0,
+              ),
+              child: const Text(
+                'MUSIC NOT FOUND',
+                key: Key('not-found-indicator'),
+              ),
+            ),
           );
         }
         return ListView.builder(
@@ -43,7 +53,7 @@ class Songs extends StatelessWidget {
             MunaStyles.distanceScreenMargin,
           ).copyWith(
             top: MunaStyles.distancePrimary,
-            bottom: _screenVerticalHeight * (20 / 100),
+            bottom: _bottomOffset,
           ),
           itemCount: _songs.length,
           itemBuilder: (BuildContext context, int index) {
@@ -63,7 +73,9 @@ class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+        key: Key('data-fetching-indicator'),
+      ),
     );
   }
 }

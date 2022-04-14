@@ -42,6 +42,9 @@ class _SearchBarState extends ConsumerState<SearchBar> {
         color: _defaultContentColor,
       ),
       child: Container(
+        padding: const EdgeInsets.all(MunaStyles.distanceScreenMargin).copyWith(
+          top: 20 + _screenTopPadding,
+        ),
         decoration: BoxDecoration(
           color: _theme.colorScheme.primary,
           borderRadius: const BorderRadius.only(
@@ -50,9 +53,6 @@ class _SearchBarState extends ConsumerState<SearchBar> {
           ),
         ),
         clipBehavior: Clip.antiAlias,
-        padding: const EdgeInsets.all(MunaStyles.distanceScreenMargin).copyWith(
-          top: MunaStyles.distanceScreenMargin + _screenTopPadding,
-        ),
         child: Builder(
           builder: (context) {
             final _fieldBorder = UnderlineInputBorder(
@@ -68,9 +68,6 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                 color: _defaultContentColor,
               ),
               cursorColor: _defaultContentColor,
-              onChanged: (text) {
-                ref.read(songsProvider.notifier).updateSearchKeyword(text);
-              },
               decoration: InputDecoration(
                 border: _fieldBorder,
                 focusedBorder: _fieldBorder,
@@ -99,12 +96,17 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                 ),
               ),
               textInputAction: TextInputAction.done,
+              onChanged: (text) {
+                ref.read(songsProvider.notifier).updateSearchKeyword(text);
+              },
               onEditingComplete: () async {
                 if (_searchFieldController.text.isNotEmpty) {
                   final _keywords = _searchFieldController.text;
+
                   await ref
                       .read(songsProvider.notifier)
                       .searchSongsByArtist(_keywords);
+
                   FocusScope.of(context).requestFocus(FocusNode());
                 }
               },

@@ -30,6 +30,7 @@ class MusicPlayer extends StatelessWidget {
           if (_songSelected == null) return Container();
 
           return Container(
+            key: const Key('music-player'),
             decoration: BoxDecoration(
               color: _theme.colorScheme.secondary,
               borderRadius: const BorderRadius.only(
@@ -126,6 +127,7 @@ class MusicPlayer extends StatelessWidget {
     if (_processingState == ProcessingState.loading ||
         _processingState == ProcessingState.buffering) {
       return SizedBox(
+        key: const Key('music-fetching-indicator'),
         width: _defaultIconSize,
         height: _defaultIconSize,
         child: CircularProgressIndicator(
@@ -135,18 +137,21 @@ class MusicPlayer extends StatelessWidget {
     } else if (audioPlayer.playing != true) {
       return _musicControllerButton(
         context,
+        key: 'play',
         icon: Icons.play_arrow,
         onPressed: audioPlayer.play,
       );
     } else if (_processingState != ProcessingState.completed) {
       return _musicControllerButton(
         context,
+        key: 'pause',
         icon: Icons.pause,
         onPressed: audioPlayer.pause,
       );
     } else {
       return _musicControllerButton(
         context,
+        key: 'replay',
         icon: Icons.replay,
         onPressed: () => audioPlayer.seek(
           Duration.zero,
@@ -158,10 +163,12 @@ class MusicPlayer extends StatelessWidget {
 
   Widget _musicControllerButton(
     BuildContext context, {
+    required String key,
     required IconData icon,
     required VoidCallback onPressed,
   }) {
     return IconButton(
+      key: Key('music-control-$key'),
       color: Theme.of(context).colorScheme.primary,
       icon: Icon(icon),
       padding: EdgeInsets.zero,
