@@ -21,8 +21,16 @@ class Songs extends StatelessWidget {
         if (_isLoading == true) {
           return const _Loading();
         } else if (_songs == null) {
-          return const Center(
-            child: Text('. . .'),
+          return Center(
+            child: Icon(
+              Icons.arrow_circle_up,
+              key: const Key('start_icon_indicator'),
+              size: 100,
+              color: Theme.of(context)
+                  .colorScheme
+                  .secondaryContainer
+                  .withOpacity(.5),
+            ),
           );
         } else if (_songs.isEmpty) {
           return const Center(

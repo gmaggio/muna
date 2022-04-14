@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 class SongData {
-  final String artworkUrl;
+  final int? trackId;
   final String trackName;
+  final String artworkUrl;
   final String artistName;
   final String collectionName;
   final String previewUrl;
 
   SongData({
+    this.trackId,
     this.artworkUrl = '',
     this.trackName = '',
     this.artistName = '',
@@ -17,13 +19,14 @@ class SongData {
 
   @override
   String toString() {
-    return 'SongData(artworkUrl: $artworkUrl, trackName: $trackName, artistName: $artistName, collectionName: $collectionName, previewUrl: $previewUrl)';
+    return 'SongData(trackId: $trackId, trackName: $trackName, artworkUrl: $artworkUrl, artistName: $artistName, collectionName: $collectionName, previewUrl: $previewUrl)';
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'artworkUrl': artworkUrl,
+      'trackId': trackId,
       'trackName': trackName,
+      'artworkUrl': artworkUrl,
       'artistName': artistName,
       'collectionName': collectionName,
       'previewUrl': previewUrl,
@@ -32,8 +35,9 @@ class SongData {
 
   factory SongData.fromMap(Map<String, dynamic> map) {
     return SongData(
-      artworkUrl: map['artworkUrl100'] ?? '',
+      trackId: map['trackId'] ?? '',
       trackName: map['trackName'] ?? '',
+      artworkUrl: map['artworkUrl100'] ?? '',
       artistName: map['artistName'] ?? '',
       collectionName: map['collectionName'] ?? '',
       previewUrl: map['previewUrl'] ?? '',

@@ -17,86 +17,89 @@ class SongItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
-      final _songSelected = ref.watch(songsProvider).songSelected;
-      final _isSelected = _songSelected != null &&
-          _songSelected.previewUrl == songData.previewUrl;
+    return Consumer(
+      builder: (context, ref, child) {
+        final _songSelected = ref.watch(songsProvider).songSelected;
+        final _isSelected =
+            _songSelected != null && _songSelected.trackId == songData.trackId;
 
-      final _theme = Theme.of(context);
+        final _theme = Theme.of(context);
 
-      return ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: Container(
-          width: _defaultIconSize,
-          height: _defaultIconSize,
-          decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(MunaStyles.borderRadiusSizeSmall),
-            border: _isSelected
-                ? Border.all(
-                    color: _theme.colorScheme.primary,
-                    width: 3,
-                  )
-                : null,
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(
-              MunaStyles.borderRadiusSizeSmall / 2,
+        return ListTile(
+          key: Key('trackid_${songData.trackId}'),
+          contentPadding: EdgeInsets.zero,
+          leading: Container(
+            width: _defaultIconSize,
+            height: _defaultIconSize,
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(MunaStyles.borderRadiusSizeSmall),
+              border: _isSelected
+                  ? Border.all(
+                      color: _theme.colorScheme.primary,
+                      width: 3,
+                    )
+                  : null,
             ),
-            child: Image.network(
-              songData.artworkUrl,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        minVerticalPadding: MunaStyles.distancePrimary,
-        horizontalTitleGap: MunaStyles.distancePrimary,
-        title: Text(
-          songData.trackName,
-          style: _theme.textTheme.bodyText2?.copyWith(
-            color: _isSelected ? _theme.colorScheme.primaryContainer : null,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: MunaStyles.distanceShort),
-            Text(
-              songData.artistName,
-              style: _theme.textTheme.subtitle1?.copyWith(
-                color: _isSelected ? _theme.colorScheme.primary : null,
+            clipBehavior: Clip.antiAlias,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                MunaStyles.borderRadiusSizeSmall / 2,
               ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: MunaStyles.distanceShorter),
-            Text(
-              songData.collectionName,
-              style: _theme.textTheme.caption?.copyWith(
-                color: _isSelected ? _theme.colorScheme.primary : null,
+              child: Image.network(
+                songData.artworkUrl,
+                fit: BoxFit.cover,
               ),
-              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
-        trailing: _isSelected
-            ? SizedBox(
-                width: _defaultIconSize,
-                height: _defaultIconSize,
-                child: Icon(
-                  Icons.music_note,
-                  size: _defaultIconSize,
-                  color: _theme.colorScheme.primary,
+          ),
+          minVerticalPadding: MunaStyles.distancePrimary,
+          horizontalTitleGap: MunaStyles.distancePrimary,
+          title: Text(
+            songData.trackName,
+            style: _theme.textTheme.bodyText2?.copyWith(
+              color: _isSelected ? _theme.colorScheme.primaryContainer : null,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: MunaStyles.distanceShort),
+              Text(
+                songData.artistName,
+                style: _theme.textTheme.subtitle1?.copyWith(
+                  color: _isSelected ? _theme.colorScheme.primary : null,
                 ),
-              )
-            : null,
-        onTap: () async {
-          FocusManager.instance.primaryFocus?.unfocus();
-          await ref.read(songsProvider.notifier).selectSong(songData);
-        },
-      );
-    });
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: MunaStyles.distanceShorter),
+              Text(
+                songData.collectionName,
+                style: _theme.textTheme.caption?.copyWith(
+                  color: _isSelected ? _theme.colorScheme.primary : null,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          trailing: _isSelected
+              ? SizedBox(
+                  width: _defaultIconSize,
+                  height: _defaultIconSize,
+                  child: Icon(
+                    Icons.music_note,
+                    size: _defaultIconSize,
+                    color: _theme.colorScheme.primary,
+                  ),
+                )
+              : null,
+          onTap: () async {
+            FocusManager.instance.primaryFocus?.unfocus();
+            await ref.read(songsProvider.notifier).selectSong(songData);
+          },
+        );
+      },
+    );
   }
 }

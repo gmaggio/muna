@@ -12,16 +12,19 @@ class SearchBar extends StatefulHookConsumerWidget {
 
 class _SearchBarState extends ConsumerState<SearchBar> {
   late TextEditingController _searchFieldController;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     _searchFieldController = TextEditingController();
+    _focusNode = FocusNode();
     super.initState();
   }
 
   @override
   void dispose() {
     _searchFieldController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -59,6 +62,7 @@ class _SearchBarState extends ConsumerState<SearchBar> {
             );
 
             return TextField(
+              focusNode: _focusNode,
               controller: _searchFieldController,
               style: _theme.textTheme.bodyText1?.copyWith(
                 color: _defaultContentColor,
@@ -88,6 +92,7 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                   onPressed: () {
                     if (_searchKeyword.isNotEmpty) {
                       _searchFieldController.clear();
+                      FocusScope.of(context).requestFocus(_focusNode);
                       ref.read(songsProvider.notifier).updateSearchKeyword('');
                     }
                   },

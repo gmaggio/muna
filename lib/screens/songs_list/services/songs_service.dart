@@ -18,9 +18,8 @@ class SongsService {
         'search',
         <String, String>{
           'term': searchKeywords,
-          'media': 'music',
+          'entity': 'musicTrack',
           'attribute': 'artistTerm',
-          // 'limit': '10',
         },
       );
 
