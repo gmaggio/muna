@@ -129,7 +129,8 @@ void main() {
             ),
             findsOneWidget,
             reason:
-                'An icon should be displayed in the selected music indicating the currently active song',
+                'An icon should be displayed in the selected music indicating '
+                'the currently active song',
           );
 
           var _musicPlayer = find.byKey(_musicPlayerKey);
@@ -150,7 +151,8 @@ void main() {
             _musicDetailTitle,
             _firstSongTitle,
             reason:
-                'The title in the music player should be the same as the title in the selected music',
+                'The title in the music player should be the same as the title '
+                'in the selected music',
           );
 
           await tester.pump();
@@ -173,7 +175,8 @@ void main() {
             ),
             findsOneWidget,
             reason:
-                'A pause button should be displayed in the music player indicating a music is playing',
+                'A pause button should be displayed in the music player indicating '
+                'a music is playing',
           );
 
           await tester.pumpAndSettle(const Duration(seconds: 15));
@@ -184,7 +187,8 @@ void main() {
             find.byKey(_musicControlPlayKey),
             findsOneWidget,
             reason:
-                'A play button should be displayed in the music player indicating a music is paused',
+                'A play button should be displayed in the music player indicating '
+                'a music is paused',
           );
 
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -195,7 +199,8 @@ void main() {
             find.byKey(_musicControlReplayKey),
             findsOneWidget,
             reason:
-                'A replay button should be displayed in the music player indicating the music has reached the end',
+                'A replay button should be displayed in the music player indicating '
+                'the music has reached the end',
           );
 
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -206,7 +211,8 @@ void main() {
             find.byKey(_musicControlPauseKey),
             findsOneWidget,
             reason:
-                'A pause button should be displayed in the music player indicating a music is playing again from the start',
+                'A pause button should be displayed in the music player indicating '
+                'a music is playing again from the start',
           );
 
           var _textField = find.byType(TextField);
@@ -239,7 +245,8 @@ void main() {
             _musicDetailTitle,
             _firstSongTitle,
             reason:
-                'The title in the music player should still be the same as the title in the previous selected music',
+                'The title in the music player should still be the same as the title '
+                'in the previous selected music',
           );
 
           await tester.pumpAndSettle(const Duration(seconds: 2));

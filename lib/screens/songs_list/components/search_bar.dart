@@ -3,8 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:muna/screens/songs_list/providers/songs_provider.dart';
 import 'package:muna/utilities/styles.dart';
 
+/// Creates a searchbar containing a clearable input field.
 class SearchBar extends StatefulHookConsumerWidget {
-  const SearchBar({Key? key}) : super(key: key);
+  const SearchBar({
+    Key? key,
+  }) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SearchBarState();
@@ -88,33 +91,41 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                           color: _defaultContentColor,
                         ),
                   onPressed: () {
-                    if (_searchKeyword.isNotEmpty) {
-                      _searchFieldController.clear();
-                      FocusScope.of(context).requestFocus(_focusNode);
-                      ref.read(songsProvider.notifier).updateSearchKeyword('');
-                    }
+                    _onClearIconPressed(_searchKeyword);
                   },
                 ),
               ),
               textInputAction: TextInputAction.done,
-              onChanged: (text) {
-                ref.read(songsProvider.notifier).updateSearchKeyword(text);
-              },
-              onEditingComplete: () async {
-                if (_searchFieldController.text.isNotEmpty) {
-                  final _keywords = _searchFieldController.text;
-
-                  await ref
-                      .read(songsProvider.notifier)
-                      .searchSongsByArtist(_keywords);
-
-                  FocusScope.of(context).requestFocus(FocusNode());
-                }
-              },
+              onChanged: _onInputChanged,
+              onEditingComplete: _onEditingComplete,
             );
           },
         ),
       ),
     );
+  }
+
+  // ACTIONS
+
+  void _onClearIconPressed(String searchKeyword) {
+    if (searchKeyword.isEmpty) return;
+
+    _searchFieldController.clear();
+    FocusScope.of(context).requestFocus(_focusNode);
+    ref.read(songsProvider.notifier).updateSearchKeyword('');
+  }
+
+  void _onInputChanged(String text) {
+    ref.read(songsProvider.notifier).updateSearchKeyword(text);
+  }
+
+  void _onEditingComplete() async {
+    if (_searchFieldController.text.isNotEmpty) {
+      final _keywords = _searchFieldController.text;
+
+      await ref.read(songsProvider.notifier).searchSongsByArtist(_keywords);
+
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 }

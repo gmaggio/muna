@@ -5,6 +5,7 @@ import 'package:muna/utilities/styles.dart';
 
 import 'song_item.dart';
 
+/// Creates a list of songs presented in [SongItem]s.
 class Songs extends StatelessWidget {
   const Songs({Key? key}) : super(key: key);
 
@@ -47,6 +48,7 @@ class Songs extends StatelessWidget {
             ),
           );
         }
+
         return ListView.builder(
           restorationId: 'SongsList',
           padding: const EdgeInsets.all(
@@ -66,6 +68,8 @@ class Songs extends StatelessWidget {
     );
   }
 }
+
+// COMPONENTS
 
 class _Loading extends StatelessWidget {
   const _Loading();

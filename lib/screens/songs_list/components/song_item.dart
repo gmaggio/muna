@@ -5,9 +5,12 @@ import 'package:muna/screens/songs_list/data/song_data.dart';
 import 'package:muna/screens/songs_list/providers/songs_provider.dart';
 import 'package:muna/utilities/styles.dart';
 
+/// Creates the container for the song items which consists of the song title,
+/// the artist, the album, and the album's artwork.
 class SongItem extends StatelessWidget {
   static const _defaultIconSize = MunaStyles.avatarSizePrimary;
 
+  /// The necessary data for the songs.
   final SongData songData;
 
   const SongItem({
@@ -28,6 +31,8 @@ class SongItem extends StatelessWidget {
         return ListTile(
           key: Key('song-${songData.trackId}'),
           contentPadding: EdgeInsets.zero,
+
+          // The Album Cover
           leading: Container(
             width: _defaultIconSize,
             height: _defaultIconSize,
@@ -52,8 +57,11 @@ class SongItem extends StatelessWidget {
               ),
             ),
           ),
+
           minVerticalPadding: MunaStyles.distancePrimary,
           horizontalTitleGap: MunaStyles.distancePrimary,
+
+          // The Song's Title
           title: Text(
             songData.trackName,
             key: const Key('song-title'),
@@ -62,11 +70,14 @@ class SongItem extends StatelessWidget {
             ),
             overflow: TextOverflow.ellipsis,
           ),
+
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: MunaStyles.distanceShort),
+
+              // The artist
               Text(
                 songData.artistName,
                 style: _theme.textTheme.subtitle1?.copyWith(
@@ -75,6 +86,8 @@ class SongItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: MunaStyles.distanceShorter),
+
+              // The Album Title
               Text(
                 songData.collectionName,
                 style: _theme.textTheme.caption?.copyWith(
@@ -84,6 +97,8 @@ class SongItem extends StatelessWidget {
               ),
             ],
           ),
+
+          // The Song's Active Indicator
           trailing: _isSelected
               ? SizedBox(
                   key: const Key('song-active-indicator'),
@@ -96,12 +111,21 @@ class SongItem extends StatelessWidget {
                   ),
                 )
               : null,
-          onTap: () async {
-            FocusManager.instance.primaryFocus?.unfocus();
-            await ref.read(songsProvider.notifier).selectSong(songData);
+          onTap: () {
+            _onTapItem(ref);
           },
         );
       },
     );
+  }
+
+  // ACTIONS
+
+  /// A callback that calls [selectSong] from [songsProvider] given the [ref].
+  ///
+  /// When called, it makes sure to unfocus any focused text fields.
+  void _onTapItem(WidgetRef ref) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    await ref.read(songsProvider.notifier).selectSong(songData);
   }
 }

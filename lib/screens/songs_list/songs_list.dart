@@ -5,6 +5,8 @@ import 'components/music_player.dart';
 import 'components/search_bar.dart';
 import 'components/songs.dart';
 
+/// Displays the app main screen which consists of a list of songs, a searchbar,
+/// and a music player.
 class SongsList extends StatefulHookConsumerWidget {
   static const routeName = '/';
 

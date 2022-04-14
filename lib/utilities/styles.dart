@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// The main styles for the layout of the app.
 class MunaStyles {
   // Colors Swatches
 
@@ -7,8 +8,6 @@ class MunaStyles {
   static const _swatchPrimaryVariant = Color(0xFFDD5043);
   static const _swatchSecondary = Color(0xff131315);
   static const _swatchSurface = Color(0xffffffff);
-  static const _swatchGreyLighter = Color(0xFFF1F2F8);
-  static const _swatchGreylight = Color(0xFFC2C6E0);
   static const _swatchGreyDark = Color(0xFF888888);
   static const _swatchGreyDarker = Color(0xFF727272);
 
