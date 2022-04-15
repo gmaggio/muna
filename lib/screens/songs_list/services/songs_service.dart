@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:muna/screens/songs_list/data/song_data.dart';
 
@@ -34,6 +35,7 @@ class SongsService {
 
       return _results.map((json) => SongData.fromMap(json)).toList();
     } catch (e) {
+      debugPrint('Exception: $e');
       rethrow;
     }
   }

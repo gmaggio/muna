@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:muna/screens/songs_list/data/song_data.dart';
@@ -61,7 +62,8 @@ class SongNotifier extends StateNotifier<SongState> {
       preload: true,
     )
         .catchError((error) {
-      // catch load errors: 404, invalid url ...
+      debugPrint('Exception: $error');
+      return null;
     });
 
     await _audioPlayer.play();
