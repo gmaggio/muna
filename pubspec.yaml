@@ -1,5 +1,5 @@
 name: muna
-description: A new Flutter project.
+description: Muna, a music search demo app using iTunes search API
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
