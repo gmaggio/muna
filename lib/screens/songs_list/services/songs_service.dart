@@ -35,7 +35,7 @@ class SongsService {
 
       return _results.map((json) => SongData.fromMap(json)).toList();
     } catch (e) {
-      debugPrint('Exception: $e');
+      debugPrint('Service Exception: $e');
       rethrow;
     }
   }

@@ -62,8 +62,7 @@ class SongNotifier extends StateNotifier<SongState> {
       preload: true,
     )
         .catchError((error) {
-      debugPrint('Exception: $error');
-      return null;
+      debugPrint('Audio Exception: $error');
     });
 
     await _audioPlayer.play();

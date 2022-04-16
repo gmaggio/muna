@@ -59,7 +59,7 @@ class MusicPlayer extends StatelessWidget {
                 // Controls
                 StreamBuilder<PlayerState>(
                   stream: _audioPlayer.playerStateStream,
-                  builder: (_, snapshot) {
+                  builder: (context, snapshot) {
                     final _playerState = snapshot.data;
 
                     return _musicController(
@@ -151,30 +151,30 @@ class MusicPlayer extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
         ),
       );
-    } else if (audioPlayer.playing != true) {
-      return _musicControllerButton(
-        context,
-        key: 'play',
-        icon: Icons.play_arrow,
-        onPressed: audioPlayer.play,
-      );
-    } else if (_processingState != ProcessingState.completed) {
-      return _musicControllerButton(
-        context,
-        key: 'pause',
-        icon: Icons.pause,
-        onPressed: audioPlayer.pause,
-      );
-    } else {
+    } else if (_processingState == ProcessingState.idle ||
+        _processingState == ProcessingState.completed) {
       return _musicControllerButton(
         context,
         key: 'replay',
         icon: Icons.replay,
-        onPressed: () => audioPlayer.seek(
-          Duration.zero,
-          index: audioPlayer.effectiveIndices?.first,
-        ),
+        onPressed: () => _onReplay(audioPlayer),
       );
+    } else {
+      if (audioPlayer.playing != true) {
+        return _musicControllerButton(
+          context,
+          key: 'play',
+          icon: Icons.play_arrow,
+          onPressed: audioPlayer.play,
+        );
+      } else {
+        return _musicControllerButton(
+          context,
+          key: 'pause',
+          icon: Icons.pause,
+          onPressed: audioPlayer.pause,
+        );
+      }
     }
   }
 
@@ -192,5 +192,19 @@ class MusicPlayer extends StatelessWidget {
       iconSize: _defaultIconSize,
       onPressed: onPressed,
     );
+  }
+
+  // ACTIONS
+
+  void _onReplay(AudioPlayer audioPlayer) {
+    if (audioPlayer.processingState == ProcessingState.idle) {
+      if (audioPlayer.playing) audioPlayer.pause();
+      audioPlayer.play();
+    } else {
+      audioPlayer.seek(
+        Duration.zero,
+        index: audioPlayer.effectiveIndices?.first,
+      );
+    }
   }
 }

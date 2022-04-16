@@ -12,6 +12,7 @@ ThemeData munaTheme(ThemeData themeBase) {
     colorScheme: _colorScheme(base.colorScheme),
     scaffoldBackgroundColor: MunaStyles.colorBackground,
     textTheme: _textTheme(base.textTheme),
+    textSelectionTheme: _textSelectionTheme(base.textSelectionTheme),
   );
 }
 
@@ -59,3 +60,8 @@ TextTheme _textTheme(TextTheme base) {
     ),
   );
 }
+
+TextSelectionThemeData? _textSelectionTheme(TextSelectionThemeData base) =>
+    base.copyWith(
+      selectionHandleColor: MunaStyles.colorSecondary.withOpacity(.7),
+    );
